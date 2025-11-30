@@ -1,7 +1,7 @@
-flask
+Flask==2.3.3
+gunicorn==21.2.0
+pandas==2.1.1
+numpy==1.25.2
 flask-cors
-gunicorn
-pandas==2.2.2
-orange3==3.36.2
-scikit-learn
-numpy
+Orange3==<version>
+
