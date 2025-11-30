@@ -122,7 +122,6 @@
       word-wrap: break-word;
     }
 
-    /* Responsive adjustments */
     @media (max-width: 768px) {
       .row {
         flex-direction: column;
@@ -241,7 +240,10 @@
 </div>
 
 <script>
-const apiUrl = "http://127.0.0.1:5000/predict";
+let apiUrl = "/predict"; // default for same server
+
+// If deployed on Render, uncomment and replace with your URL
+// apiUrl = "https://your-render-service.onrender.com/predict";
 
 function gatherRow() {
   return {
