@@ -240,65 +240,62 @@
 </div>
 
 <script>
-let apiUrl = "/predict"; // default for same server
+  // Replace this with your deployed Flask API URL
+  const apiUrl = "http://127.0.0.1:5000/predict.onrender.com/predict";
 
-// If deployed on Render, uncomment and replace with your URL
-// apiUrl = "https://your-render-service.onrender.com/predict";
-
-function gatherRow() {
-  return {
-    StudentID: parseInt(document.getElementById('StudentID').value),
-    Age: parseInt(document.getElementById('Age').value),
-    Gender: document.getElementById('Gender').value === "Male" ? 1 : 0,
-    Ethnicity: parseInt(document.getElementById('Ethnicity').value),
-    ParentalEducation: parseInt(document.getElementById('ParentalEducation').value),
-    StudyTimeWeekly: parseFloat(document.getElementById('StudyTimeWeekly').value),
-    Absences: parseInt(document.getElementById('Absences').value),
-    Tutoring: parseInt(document.getElementById('Tutoring').value),
-    ParentalSupport: parseInt(document.getElementById('ParentalSupport').value),
-    Extracurricular: parseInt(document.getElementById('Extracurricular').value),
-    Sports: parseInt(document.getElementById('Sports').value),
-    Music: parseInt(document.getElementById('Music').value),
-    Volunteering: parseInt(document.getElementById('Volunteering').value),
-    GPA: parseFloat(document.getElementById('GPA').value)
-  };
-}
-
-document.getElementById('predictForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  document.getElementById('output').style.display = 'none';
-  document.getElementById('error').innerText = '';
-
-  const row = gatherRow();
-
-  try {
-    const resp = await fetch(apiUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ rows: [row] })
-    });
-
-    if (!resp.ok) {
-      const txt = await resp.text();
-      throw new Error('Server error: ' + txt);
-    }
-
-    const json = await resp.json();
-    const pred = (json.prediction && json.prediction[0]) || 'No prediction';
-    const el = document.getElementById('output');
-    el.style.display = 'block';
-    const displayPred = pred.toLowerCase() === 'pass' ? 'Passed' : 'Failed';
-    el.innerText = 'Prediction: ' + displayPred;
-  } catch (err) {
-    document.getElementById('error').innerText = err.message || String(err);
+  function gatherRow() {
+    return {
+      StudentID: parseInt(document.getElementById('StudentID').value),
+      Age: parseInt(document.getElementById('Age').value),
+      Gender: document.getElementById('Gender').value === "Male" ? 1 : 0,
+      Ethnicity: parseInt(document.getElementById('Ethnicity').value),
+      ParentalEducation: parseInt(document.getElementById('ParentalEducation').value),
+      StudyTimeWeekly: parseFloat(document.getElementById('StudyTimeWeekly').value),
+      Absences: parseInt(document.getElementById('Absences').value),
+      Tutoring: parseInt(document.getElementById('Tutoring').value),
+      ParentalSupport: parseInt(document.getElementById('ParentalSupport').value),
+      Extracurricular: parseInt(document.getElementById('Extracurricular').value),
+      Sports: parseInt(document.getElementById('Sports').value),
+      Music: parseInt(document.getElementById('Music').value),
+      Volunteering: parseInt(document.getElementById('Volunteering').value),
+      GPA: parseFloat(document.getElementById('GPA').value)
+    };
   }
-});
 
-document.getElementById('clearBtn').addEventListener('click', () => {
-  document.getElementById('predictForm').reset();
-  document.getElementById('output').style.display = 'none';
-  document.getElementById('error').innerText = '';
-});
+  document.getElementById('predictForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    document.getElementById('output').style.display = 'none';
+    document.getElementById('error').innerText = '';
+
+    const row = gatherRow();
+
+    try {
+      const resp = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ rows: [row] })
+      });
+
+      if (!resp.ok) {
+        const txt = await resp.text();
+        throw new Error('Server error: ' + txt);
+      }
+
+      const json = await resp.json();
+      const pred = (json.prediction && json.prediction[0]) || 'No prediction';
+      const el = document.getElementById('output');
+      el.style.display = 'block';
+      el.innerText = 'Prediction: ' + (pred.toLowerCase() === 'pass' ? 'Passed' : 'Failed');
+    } catch (err) {
+      document.getElementById('error').innerText = err.message || String(err);
+    }
+  });
+
+  document.getElementById('clearBtn').addEventListener('click', () => {
+    document.getElementById('predictForm').reset();
+    document.getElementById('output').style.display = 'none';
+    document.getElementById('error').innerText = '';
+  });
 </script>
 </body>
 </html>
