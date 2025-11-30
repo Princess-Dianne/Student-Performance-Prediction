@@ -1,6 +1,7 @@
-Flask==3.0.2
-flask-cors==4.0.0
+flask
+flask-cors
+gunicorn
 pandas==2.2.2
-numpy==1.26.4
 orange3==3.36.2
-scikit-learn==1.4.2
+scikit-learn
+numpy
